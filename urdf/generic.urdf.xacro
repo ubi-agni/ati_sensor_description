@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="generic" params="prefix:=^ props">
+    <xacro:property name="prefix_" value="${prefix + '_' if prefix else ''}"/>
+    <xacro:if value="${'interface_height' in props}" >
+      <xacro:property name="ati_offset" value="${props['bare_height'] + props['interface_height']}"/>
+    </xacro:if>
+    <xacro:unless value="${'interface_height' in props}" >
+      <xacro:property name="ati_offset" value="${props['full_height']}"/>
+    </xacro:unless>
+    <xacro:property name="ati_radius" value="${props['diameter']/2.0}"/>
+    <xacro:property name="ati_mass" value="${props['mass']}"/>
+
+    <link name="${prefix_}ft_sensor_link">
+      <inertial>
+        <mass value="${ati_mass}"/>
+        <origin xyz="0 0 ${ati_offset/2.0}"/>
+        <xacro:cylinder_inertia_def length="${ati_offset}" radius="${ati_radius}" mass="${ati_mass}"/>
+      </inertial>
+      <!-- visual mesh provided -->
+      <xacro:if value="${'visual_mesh_file' in props}" >
+        <xacro:property name="visual_mesh_file" value="${props['visual_mesh_file']}"/>
+        <xacro:if value="${'visual_mesh_scale' in props}" >
+          <xacro:property name="visual_mesh_scale" value="${props['visual_mesh_scale']}"/>
+        </xacro:if>
+        <xacro:unless value="${'visual_mesh_scale' in props}" >
+          <xacro:property name="visual_mesh_scale" value="1.0"/>
+        </xacro:unless>
+        <!-- collision mesh provided -->
+        <xacro:if value="${'collision_mesh_file' in props}" >
+          <xacro:property name="collision_mesh_file" value="${props['collision_mesh_file']}"/>
+          <xacro:if value="${'collision_mesh_scale' in props}" >
+            <xacro:property name="collision_mesh_scale" value="${props['collision_mesh_scale']}"/>
+          </xacro:if>
+          <xacro:unless value="${'collision_mesh_scale' in props}" >
+            <xacro:property name="collision_mesh_scale" value="1.0"/>
+          </xacro:unless>
+        </xacro:if>
+        <!-- otherwise use visual for collision -->
+        <xacro:unless value="${'collision_mesh_file' in props}" >
+          <xacro:property name="collision_mesh_file" value="${visual_mesh_file}"/>
+          <xacro:property name="collision_mesh_scale" value="${visual_mesh_scale}"/>
+        </xacro:unless>
+
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <mesh filename="package://ati_sensor_description/meshes/${visual_mesh_file}" scale="${visual_mesh_scale} ${visual_mesh_scale} ${visual_mesh_scale}" />
+          </geometry>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <mesh filename="package://ati_sensor_description/meshes/${collision_mesh_file}" scale="${collision_mesh_scale} ${collision_mesh_scale} ${collision_mesh_scale}" />
+          </geometry>
+        </collision>
+      </xacro:if>
+      <!-- no mesh provided -->
+      <xacro:unless value="${'visual_mesh_file' in props}" >
+        <visual>
+          <origin xyz="0 0 ${ati_offset/2.0}" rpy="0 0 0"/>
+          <geometry>
+             <cylinder radius="${ati_radius}" length="${ati_offset}" />
+          </geometry>
+          <material name="Silver"/>
+        </visual>
+        <collision>
+          <origin xyz="0 0 ${ati_offset/2.0}" rpy="0 0 0"/>
+          <geometry>
+            <cylinder radius="${ati_radius}" length="${ati_offset}" />
+          </geometry>
+        </collision>
+      </xacro:unless>
+    </link>
+  </xacro:macro>
+</robot>
+

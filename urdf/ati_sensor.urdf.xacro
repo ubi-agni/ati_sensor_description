@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="ati_sensor" >
+  <xacro:macro name="ati_sensor" params="prefix:='' child:='' model:='gamma' interface_height:='-' sim:=false rate:=100">
+    <!-- access sensor models -->
+    <xacro:property name="settings" value="${load_yaml('../robots/sensor_types.yaml')}" />
+
+    <!-- extract properties -->
+    <xacro:property name="props" value="${settings['ati_sensor_models'][model]['props'] if 'props' in settings['ati_sensor_models'][model] else dict()}"/>
+    <xacro:property name="prefix_" value="${prefix + '_' if prefix else ''}"/>
+    <xacro:include filename="../urdf/util.urdf.xacro" />
+    <xacro:include filename="../urdf/fts.transmission.xacro" />
+    <xacro:include filename="../urdf/fts.gazebo.xacro" />
+    <xacro:include filename="${settings['ati_sensor_models'][model]['file']}"/>
+
+    <xacro:if value="${interface_height == '-'}" >
+      <xacro:if value="${'interface_height' in props}" >
+        <xacro:property name="ati_offset" value="${props['bare_height'] + props['interface_height']}"/>
+      </xacro:if>
+      <xacro:unless value="${'interface_height' in props}" >
+        <xacro:property name="ati_offset" value="${props['full_height']}"/>
+      </xacro:unless>
+    </xacro:if>
+    <xacro:unless value="${interface_height == '-'}" >
+      <xacro:if value="${'bare_height' in props}" >
+        <xacro:property name="ati_offset" value="${props['bare_height'] + interface_height}"/>
+      </xacro:if>
+      <xacro:unless value="${'bare_height' in props}" >
+        <xacro:property name="ati_offset" value="${props['full_height']}"/>
+      </xacro:unless>
+    </xacro:unless>
+
+    <!-- specific link to each sensor -->
+    <xacro:call macro="${settings['ati_sensor_models'][model]['macro']}"
+                prefix="${prefix}" 
+                props="${props}" />
+
+    <!-- common links to all sensors -->
+    <link name="${prefix_}ft_tool_link">
+       <inertial>
+        <mass value="0.001"/>
+        <origin xyz="0 0 ${0.001/2.0}"/>
+        <xacro:cylinder_inertia_def length="0.001" radius="${props['diameter']/2.0}" mass="0.001"/>
+      </inertial>
+      <visual>
+          <origin xyz="0 0 ${0.001/2.0}" rpy="0 0 0"/>
+          <geometry>
+             <cylinder radius="${props['diameter']/2.0}" length="0.001" />
+          </geometry>
+        </visual>
+        <collision>
+          <origin xyz="0 0 ${0.001/2.0}" rpy="0 0 0"/>
+          <geometry>
+             <cylinder radius="${props['diameter']/2.0}" length="0.001" />
+          </geometry>
+        </collision>
+    </link>
+
+    <joint name="${prefix_}ft_reference_joint" type="prismatic">
+      <axis xyz="0 0 1" />
+      <origin xyz="0 0 ${ati_offset}"/>
+      <parent link="${prefix_}ft_sensor_link"/>
+      <child link="${prefix_}ft_tool_link" />
+      <limit effort="100.0" lower="0.0" upper="0.0001" velocity="100.0"/>
+    </joint> 
+
+    <xacro:fts_transmission/>
+
+    <!-- if provided, attach the tool to the ati sensor -->
+    <xacro:if value="${1 if child else 0}">
+      <joint name="${prefix_}ft_tool_fixed_joint" type="fixed">
+         <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="${prefix_}ft_tool_link"/>
+        <child link="${child}"/>
+      </joint>
+    </xacro:if>
+
+    <!-- if sim -->
+    <xacro:if value="${sim}">
+      <xacro:fts_gazebo_sensor/>
+    </xacro:if>
+  </xacro:macro>
+</robot>

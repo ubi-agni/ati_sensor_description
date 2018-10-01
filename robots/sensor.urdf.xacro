@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="ati_sensor" >
+
+  <xacro:arg name="model" default="gamma" />
+  <xacro:arg name="sim" default="false" />
+  <!-- ati sensor -->
+  <xacro:include filename="$(find ati_sensor_description)/urdf/ati_sensor.urdf.xacro" />
+
+  <!-- Used for fixing sensor to Gazebo -->
+  <link name="world"/>
+
+  <!-- sensor -->
+  <xacro:ati_sensor prefix="" child="" model="$(arg model)" sim="$(arg sim)"/>
+
+  <joint name="ft_base_fixed_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="world"/>
+    <child link="ft_sensor_link"/>
+  </joint>
+
+</robot>

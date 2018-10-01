@@ -1,0 +1,58 @@
+ati_sensor_models:
+  gamma:
+    file:  ../urdf/generic.urdf.xacro
+    macro: generic
+    props:
+      mass: 0.255
+      diameter: 0.074
+      full_height: 0.0333 # with standard mount interface
+      bare_height: 0.0286
+      #visual_mesh_file: 
+      #collision_mesh_file: 
+      #visual_mesh_scale: 
+      #collision_mesh_scale: 
+      #interface_height: 0.008
+ 
+  nano17:
+    file:  ../urdf/generic.urdf.xacro
+    macro: generic
+    props:
+      type: 17
+      mass: 0.00907
+      diameter: 0.017
+      full_height: 0.0145
+      bare_height: 0.0145
+
+  nano25:
+    file:  ../urdf/generic.urdf.xacro
+    macro: generic
+    props:
+      type: 25
+      mass: 0.0634
+      diameter: 0.025
+      full_height: 0.0216
+      bare_height: 0.0216
+
+  mini45:
+    file:  ../urdf/generic.urdf.xacro
+    macro: generic
+    props:
+      type: 43
+      mass: 0.0917
+      diameter: 0.045
+      full_height: 0.0157
+      bare_height: 0.0157
+
+  mini58:
+    file:  ../urdf/generic.urdf.xacro
+    macro: generic
+    props:
+      type: 58
+      mass: 0.345
+      diameter: 0.058
+      full_height: 0.030
+      bare_height: 0.030
+      visual_mesh_file: mini58.dae 
+      collision_mesh_file: mini58.stl
+      visual_mesh_scale: 1.0
+      collision_mesh_scale: 0.001
