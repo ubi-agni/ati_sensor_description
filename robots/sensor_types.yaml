@@ -1,6 +1,6 @@
 ati_sensor_models:
   gamma:
-    file:  ../urdf/generic.urdf.xacro
+    file:  urdf/generic.urdf.xacro
     macro: generic
     props:
       mass: 0.255
@@ -14,7 +14,7 @@ ati_sensor_models:
       #interface_height: 0.008
  
   nano17:
-    file:  ../urdf/generic.urdf.xacro
+    file:  urdf/generic.urdf.xacro
     macro: generic
     props:
       type: 17
@@ -24,7 +24,7 @@ ati_sensor_models:
       bare_height: 0.0145
 
   nano25:
-    file:  ../urdf/generic.urdf.xacro
+    file:  urdf/generic.urdf.xacro
     macro: generic
     props:
       type: 25
@@ -34,7 +34,7 @@ ati_sensor_models:
       bare_height: 0.0216
 
   mini45:
-    file:  ../urdf/generic.urdf.xacro
+    file:  urdf/generic.urdf.xacro
     macro: generic
     props:
       type: 43
@@ -44,7 +44,7 @@ ati_sensor_models:
       bare_height: 0.0157
 
   mini58:
-    file:  ../urdf/generic.urdf.xacro
+    file:  urdf/generic.urdf.xacro
     macro: generic
     props:
       type: 58

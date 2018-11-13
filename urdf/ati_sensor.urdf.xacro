@@ -3,16 +3,19 @@
        name="ati_sensor" >
   <xacro:macro name="ati_sensor" params="prefix:='' child:='' model:='gamma' interface_height:='-' sim:=false rate:=100">
     <!-- access sensor models -->
-    <xacro:property name="settings" value="${load_yaml('../robots/sensor_types.yaml')}" />
+    
+    <xacro:property name="package_path" value="$(find ati_sensor_description)" />
+    <xacro:property name="settings" value="${load_yaml(package_path+'/robots/sensor_types.yaml')}" />
 
     <!-- extract properties -->
     <xacro:property name="props" value="${settings['ati_sensor_models'][model]['props'] if 'props' in settings['ati_sensor_models'][model] else dict()}"/>
     <xacro:property name="prefix_" value="${prefix + '_' if prefix else ''}"/>
-    <xacro:include filename="../urdf/util.urdf.xacro" />
-    <xacro:include filename="../urdf/fts.transmission.xacro" />
-    <xacro:include filename="../urdf/fts.gazebo.xacro" />
-    <xacro:include filename="${settings['ati_sensor_models'][model]['file']}"/>
+    <xacro:include filename="${package_path}/urdf/util.urdf.xacro" />
+    <xacro:include filename="${package_path}/urdf/fts.transmission.xacro" />
+    <xacro:include filename="${package_path}/urdf/fts.gazebo.xacro" />
+    <xacro:include filename="${package_path}/${settings['ati_sensor_models'][model]['file']}"/>
 
+    <!-- if interface_height is not given -->
     <xacro:if value="${interface_height == '-'}" >
       <xacro:if value="${'interface_height' in props}" >
         <xacro:property name="ati_offset" value="${props['bare_height'] + props['interface_height']}"/>
@@ -21,6 +24,7 @@
         <xacro:property name="ati_offset" value="${props['full_height']}"/>
       </xacro:unless>
     </xacro:if>
+    <!-- if given add it to bare height if exist, otherwise use fullheight and ignore interface height -->
     <xacro:unless value="${interface_height == '-'}" >
       <xacro:if value="${'bare_height' in props}" >
         <xacro:property name="ati_offset" value="${props['bare_height'] + interface_height}"/>
