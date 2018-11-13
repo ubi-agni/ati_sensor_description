@@ -17,10 +17,10 @@ A Wrench is produced, relatively to the *top plate* of the sensor (*ft_tool_link
 
 The urdf macros are designed to load models defined in the sensor_types.yaml, and passing some other parameters, even overriding some of them.
 
-* **prefix**: the prefix used in from of ft_sensor in names and as namespace
-* **child**: frame of the tool to be attached to the ATI if provided
+* **prefix**: the prefix used in front of ft_sensor in names and as namespace
+* **child**: frame of the tool to be attached to the ATI if provided (tool frame of ati will be statically linked to this child)
 * **model**: (default to 'gamma'): name of the yaml parameters to load
-* **interface_height**: thickness of the interface between the robot and the ati sensor (using the bare height of the sensor, without the standard flat plate)
+* **interface_height**: thickness of the interface between the robot and the ati sensor. If given (and not '-'), value is added to the bare height of the sensor, without the standard flat plate
 * **sim** (default to false): adds a gazebo FT plugin if true
 * **rate** (default to 100): rate of update of the gazebo plugin
 
