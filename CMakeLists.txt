@@ -5,3 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   gazebo_ros
 )
 
+foreach(dir urdf meshes robots)
+   install(DIRECTORY ${dir}/
+      DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
+endforeach(dir)
