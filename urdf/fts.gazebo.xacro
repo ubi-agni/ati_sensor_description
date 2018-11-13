@@ -16,7 +16,7 @@
       <gazebo>
         <plugin name="${prefix_}ft_sensor" filename="libgazebo_ros_ft_sensor.so">
         <updateRate>${rate}</updateRate>
-        <topicName>${prefix_}/ft_sensor</topicName> 
+        <topicName>${prefix_}ft_sensor</topicName> 
         <jointName>${prefix_}ft_reference_joint</jointName>
         <!--gaussianNoise>0.003</gaussianNoise-->
         </plugin>
