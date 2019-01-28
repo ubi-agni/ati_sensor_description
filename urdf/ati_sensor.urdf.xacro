@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"
        name="ati_sensor" >
-  <xacro:macro name="ati_sensor" params="prefix:='' child:='' model:='gamma' interface_height:='-' sim:=false rate:=100">
+  <xacro:macro name="ati_sensor" params="prefix:='' child:='' model:='gamma' interface_height:='-' sim:=false controller:=false rate:=100">
     <!-- access sensor models -->
     
     <xacro:property name="package_path" value="$(find ati_sensor_description)" />
@@ -68,7 +68,9 @@
       <limit effort="100.0" lower="0.0" upper="0.0001" velocity="100.0"/>
     </joint> 
 
-    <xacro:fts_transmission/>
+    <xacro:if value="${controller}">
+      <xacro:fts_transmission/>
+    </xacro:if>
 
     <!-- if provided, attach the tool to the ati sensor -->
     <xacro:if value="${1 if child else 0}">

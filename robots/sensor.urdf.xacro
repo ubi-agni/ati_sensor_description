@@ -4,6 +4,7 @@
 
   <xacro:arg name="model" default="gamma" />
   <xacro:arg name="sim" default="false" />
+  <xacro:arg name="controller" default="false" />
   <!-- ati sensor -->
   <xacro:include filename="$(find ati_sensor_description)/urdf/ati_sensor.urdf.xacro" />
 
@@ -11,7 +12,7 @@
   <link name="world"/>
 
   <!-- sensor -->
-  <xacro:ati_sensor prefix="" child="" model="$(arg model)" sim="$(arg sim)"/>
+  <xacro:ati_sensor prefix="" child="" model="$(arg model)" sim="$(arg sim)" controller="$(arg controller)"/>
 
   <joint name="ft_base_fixed_joint" type="fixed">
     <origin xyz="0 0 0" rpy="0 0 0" />
