@@ -29,7 +29,7 @@ The urdf macros are designed to load models defined in the sensor_types.yaml, an
 There is a standalone example (can be directly spawned in gazebo), attached to the world, which shows how to instantiate the macro
 
 ```
-xacro --inorder `rospack find ati_sensor_description`/robots/sensor.urdf.xacro sim:=true > /tmp/sensor.urdf
+xacro `rospack find ati_sensor_description`/robots/sensor.urdf.xacro sim:=true > /tmp/sensor.urdf
 roslaunch gazebo_ros empty_world.launch
 rosrun gazebo_ros spawn_model -urdf -file /tmp/sensor.urdf -model sensor
 ```
